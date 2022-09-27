@@ -14,6 +14,19 @@
       <div class="modal__content">
         <label for="title">Movie Title</label>
         <input type="text" name="title" id="title" />
+        <label for="description">Description</label>
+        <textarea
+          type="text"
+          name="description"
+          id="description"
+          style="height: 150px; resize: none"
+        ></textarea>
+        <label for="year">Year</label>
+        <input type="number" name="year" id="year" />
+        <label for="genres">Genres</label>
+        <input type="text" name="genres" id="genres" />
+        <label for="duration">Duration</label>
+        <input type="text" name="duration" id="duration" />
         <label for="image-url">Image URL</label>
         <input type="text" name="image-url" id="image-url" />
         <label for="rating">Your Rating</label>
@@ -25,10 +38,14 @@
           name="rating"
           id="rating"
         />
+        <label for="trailer-link">Trailer Link</label>
+        <input type="text" name="trailer-link" id="trailer-link" />
+        <label for="movie-link">Movie Link</label>
+        <input type="text" name="movie-link" id="movie-link" />
       </div>
       <div class="modal__actions">
-        <button class="btn btn--passive">Cancel</button>
-        <button class="btn btn--success">Add</button>
+        <button class="btn btn--passive" id="cancel-modal">Cancel</button>
+        <button class="btn btn--success" id="add-movies">Add</button>
       </div>
     </div>
     <div class="modal" id="delete-modal">
@@ -45,7 +62,7 @@
 
     <header>
       <h1>Favorite Movies</h1>
-      <button id = "addMoviesBtn">ADD MOVIE</button>
+      <button>ADD MOVIE</button>
     </header>
 
     <main>
