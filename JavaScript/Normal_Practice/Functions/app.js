@@ -10,7 +10,8 @@ const RESULT_COMPUTER_WINS = 'COMPUTER_WINS';
 
 let gameIsRunning = false;
 
-const getPlayerChoice = () => {//arrow function
+const getPlayerChoice = () => {
+  //arrow function
   const selection = prompt(`${ROCK}, ${PAPER}, ${SCISSORS}`, '').toUpperCase();
 
   if (selection !== ROCK && selection !== PAPER && selection !== SCISSORS) {
@@ -31,19 +32,26 @@ const getComputerChoice = () => {
   }
 };
 
-const getWinner = (cChoice, pChoice) => {
-  if (cChoice === pChoice) {
-    return RESULT_DRAW;
-  } else if (
-    (cChoice === ROCK && pChoice === PAPER) ||
-    (cChoice === PAPER && pChoice === SCISSORS) ||
-    (cChoice === SCISSORS && pChoice === ROCK)
-  ) {
-    return RESULT_PLAYER_WINS;
-  } else {
-    return RESULT_COMPUTER_WINS;
-  }
-};
+const getWinner = (cChoice, pChoice) =>
+  cChoice === pChoice
+    ? RESULT_DRAW
+    : (cChoice === ROCK && pChoice === PAPER) ||
+      (cChoice === PAPER && pChoice === SCISSORS) ||
+      (cChoice === SCISSORS && pChoice === ROCK)
+    ? RESULT_PLAYER_WINS
+    : RESULT_COMPUTER_WINS;
+
+// if (cChoice === pChoice) {
+//   return RESULT_DRAW;
+// } else if (
+//   (cChoice === ROCK && pChoice === PAPER) ||
+//   (cChoice === PAPER && pChoice === SCISSORS) ||
+//   (cChoice === SCISSORS && pChoice === ROCK)
+// ) {
+//   return RESULT_PLAYER_WINS;
+// } else {
+//   return RESULT_COMPUTER_WINS;
+// }
 
 //function as declaration/statement
 // function startGame() {
@@ -70,9 +78,55 @@ startGameBtn.addEventListener('click', () => {
     return; //stop code execution
   }
   gameIsRunning = true;
-  console.log('Game is starting....');
   const playerChoice = getPlayerChoice();
   const computerChoice = getComputerChoice();
   const winner = getWinner(playerChoice, computerChoice);
-  console.log(winner);
+  let message = `You picked ${playerChoice} and computer picked ${computerChoice} and therefore you `;
+
+  if (winner === RESULT_DRAW) {
+    message = message + 'had a draw.';
+  } else if (winner === RESULT_PLAYER_WINS) {
+    message = message + 'win!';
+  } else {
+    message = message + 'lost.';
+  }
+
+  alert(message);
+  gameIsRunning = false;
 });
+
+//rest parameters
+// const sumUp = (...numbers) => {
+//   let sum = 0;
+//   for (const num of numbers) {
+//     sum += num;
+//   }
+//   console.log(numbers);
+//   return sum;
+// };
+
+//cal back function
+const sumUp = (resultHandler, ...numbers) => {
+  let sum = 0;
+  for (const num of numbers) {
+    sum += num;
+  }
+  console.log(numbers);
+  return resultHandler(sum);
+};
+
+const subtractUp = (resultHandler, ...numbers) => {
+  let sum = 0;
+  for (const num of numbers) {
+    sum -= num;
+  }
+  console.log(numbers);
+  return resultHandler(sum);
+};
+
+const showResult = (resultMessage, result) => {
+  alert(resultMessage + ' ' + result);
+};
+
+sumUp(showResult.bind(this, 'Addition: '), 2, 3, 44, 15, 151);
+subtractUp(showResult.bind(this, 'Subtraction: '), -458, 200, -100, 50);
