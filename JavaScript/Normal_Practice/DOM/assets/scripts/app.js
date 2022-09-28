@@ -27,6 +27,7 @@ const deleteMovieHandler = (movieId) => {
   movies.splice(movieIndex, 1);
   const listRoot = document.getElementById('movie-list');
   listRoot.children[movieIndex].remove();
+  updateUI();
 };
 
 const renderNewMovieElements = (
@@ -39,9 +40,14 @@ const renderNewMovieElements = (
   imageUrl,
   rating,
   trailer,
-  movieLink
+  movieLink,
+  imdbLink
 ) => {
   const newMovieElement = document.createElement('li');
+  const deleteMovieBtn = document.createElement('button');
+  const editMovieBtn = document.createElement('button');
+  deleteMovieBtn.innerText = 'Delete';
+  editMovieBtn.innerText = 'Edit';
   newMovieElement.className = 'movie-element';
   newMovieElement.innerHTML = `
     <div class="movie-element__image">
@@ -53,17 +59,18 @@ const renderNewMovieElements = (
         <h3>Year: ${year}</h3>
         <h3>Genres: ${genres}</h3>
         <h3>Duration: ${duration}</h3>
-        <a href="${trailer}" target="_blank">Trailer</a>
+        <a href="${trailer}">Trailer</a>
         </br>
         </br>
-        <a href="${movieLink}" target="_blank">Watch Now</a>
+        <a href="${movieLink}">Watch Now</a>
         </br>
         </br>
-        <span>${rating}/5 stars</span>
+        <span><a href="${imdbLink}">${rating}/10 stars</a></span>
     </div>`;
-  newMovieElement.addEventListener('click', deleteMovieHandler.bind(null, id));
+  deleteMovieBtn.addEventListener('click', deleteMovieHandler.bind(null, id));
   const listRoot = document.getElementById('movie-list');
   listRoot.append(newMovieElement);
+  newMovieElement.append(deleteMovieBtn,editMovieBtn);
 };
 
 const toggleBackdrop = () => {
@@ -99,6 +106,7 @@ const addMovieHandler = () => {
   const ratingValue = userInputs[6].value;
   const trailerValue = userInputs[7].value;
   const movieValue = userInputs[8].value;
+  const imdbLinkValue = userInputs[9].value;
 
   if (titleValue.trim() === '') {
     alert('Title is required!');
@@ -121,14 +129,17 @@ const addMovieHandler = () => {
   } else if (ratingValue.trim() === '') {
     alert('Rating is required!');
     return;
-  } else if (+ratingValue < 1 || +ratingValue > 5) {
-    alert('Please enter valid values (rating between 1 and 5).');
+  } else if (+ratingValue < 1 || +ratingValue > 10) {
+    alert('Please enter valid values (rating between 1 and 10).');
     return;
   } else if (trailerValue.trim() === '') {
     alert('Trailer is required!');
     return;
   } else if (movieValue.trim() === '') {
     alert('Movie link is required!');
+    return;
+  } else if (imdbLinkValue.trim() === '') {
+    alert('IMDB link is required!');
     return;
   }
 
@@ -143,6 +154,7 @@ const addMovieHandler = () => {
     rating: ratingValue,
     trailer: trailerValue,
     movieLink: movieValue,
+    imdbLink: imdbLinkValue,
   };
   movies.push(newMovies);
   console.log(movies);
@@ -158,10 +170,43 @@ const addMovieHandler = () => {
     newMovies.imageUrl,
     newMovies.rating,
     newMovies.trailer,
-    newMovies.movieLink
+    newMovies.movieLink,
+    newMovies.imdbLink
   );
   updateUI();
 };
+//dummy values start
+const dummyMovies = {
+  id: '01',
+  title: 'The Gray Man',
+  description: `When the CIA's top asset -- his identity known to no one -- uncovers agency secrets, he triggers a global hunt by assassins set loose by his ex-colleague.`,
+  year: '2022',
+  genres: 'Action, Drama, Thriller',
+  duration: '2h 2m',
+  imageUrl:
+    'https://seuladogeek.com.br/wp-content/uploads/2022/05/The-Gray-Man-Movie.jpg',
+  rating: '6.5',
+  trailer: 'https://www.youtube.com/watch?v=BmllggGO4pM',
+  movieLink: 'https://roshiya.me/tag/index-of-the-gray-man-2022/',
+  imdbLink: 'https://www.imdb.com/title/tt1649418/',
+};
+
+movies.push(dummyMovies);
+renderNewMovieElements(
+  dummyMovies.id,
+  dummyMovies.title,
+  dummyMovies.description,
+  dummyMovies.year,
+  dummyMovies.genres,
+  dummyMovies.duration,
+  dummyMovies.imageUrl,
+  dummyMovies.rating,
+  dummyMovies.trailer,
+  dummyMovies.movieLink,
+  dummyMovies.imdbLink
+);
+updateUI();
+//dummy values end
 
 startMoviesBtn.addEventListener('click', toggleMovieModal);
 backdrop.addEventListener('click', backdropClickHandler);

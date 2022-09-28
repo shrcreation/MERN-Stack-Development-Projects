@@ -163,14 +163,49 @@ input:focus {
   margin-bottom: 1rem;
 }
 
-.movie-element span {
+.movie-element span a {
   color: white;
   display: inline;
   background: #f67722;
   padding: 0.25rem 1rem;
-  border-radius: 15px;
+  border-radius: 5px;
 }
 
+.movie-element h3 {
+  font-size: 16px;
+  margin: 10px 0px;
+  font-family: auto;
+}
+.movie-element a {
+  text-decoration: none;
+  background-color: #1e1e1e;
+  color: white;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 5px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  font-family: auto;
+}
+.movie-element a:hover {
+  background-color: #d30808;
+}
+.movie-element button {
+  background: #ffbf00;
+  color: black;
+  border-radius: 5px;
+  padding: 5px 7px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  margin-top: 4px;
+  margin-right: 4px;
+  height: 50%;
+}
+.movie-element button:hover {
+  background: #d30808;
+  color: white;
+}
 .movie-element__image {
   flex: 1;
   border-radius: 10px 0 0 10px;
@@ -180,7 +215,7 @@ input:focus {
 .movie-element__image img {
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .movie-element__info {
