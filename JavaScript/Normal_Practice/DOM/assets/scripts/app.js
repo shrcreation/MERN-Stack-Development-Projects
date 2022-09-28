@@ -8,6 +8,7 @@ const userInputs = addMoviesModal.querySelectorAll('input'); //store as an array
 const headerText = document.getElementById('entry-text');
 const deleteMovieModal = document.getElementById('delete-modal');
 const movies = [];
+let addOrUpdate;
 
 //toggle(on/of switch) the overly background
 const toggleBackdrop = () => {
@@ -83,6 +84,7 @@ const renderNewMovieElements = (
   //set values
   deleteMovieBtn.innerText = 'Delete';
   editMovieBtn.innerText = 'Edit';
+  //editMovieBtn.style.display = 'none';
   newMovieElement.className = 'movie-element';
   newMovieElement.innerHTML = `
     <div class="movie-element__image">
@@ -104,18 +106,52 @@ const renderNewMovieElements = (
     </div>`;
   //delete movies by passing the id
   deleteMovieBtn.addEventListener('click', deleteMovieHandler.bind(null, id));
+  editMovieBtn.addEventListener('click', showEditMovieModal.bind(null, id));
   const listRoot = document.getElementById('movie-list');
   listRoot.append(newMovieElement); //append the li into the root (ul)
   newMovieElement.append(deleteMovieBtn, editMovieBtn); //append the extra button into the li
 };
 
+const showEditMovieModal = (movieId) => {
+  let movieIndex = 0;
+  addOrUpdate = 'UPDATE';
+  //find the index
+  for (const movie of movies) {
+    if (movie.id === movieId) {
+      break;
+    }
+    movieIndex++;
+  }
+  //get movies index
+  const editMovieInfo = movies[movieIndex];
+
+  userInputs[0].value = editMovieInfo.title;
+  userInputs[1].value = editMovieInfo.description;
+  userInputs[2].value = editMovieInfo.year;
+  userInputs[3].value = editMovieInfo.genres;
+  userInputs[4].value = editMovieInfo.duration;
+  userInputs[5].value = editMovieInfo.imageUrl;
+  userInputs[6].value = editMovieInfo.rating;
+  userInputs[7].value = editMovieInfo.trailer;
+  userInputs[8].value = editMovieInfo.movieLink;
+  userInputs[9].value = editMovieInfo.imdbLink;
+
+  confirmAddMoviesBtn.innerText = 'Update';
+  //show the update modal
+  addMoviesModal.classList.add('visible');
+  toggleBackdrop();
+};
+
 const showMovieModal = () => {
+  addOrUpdate = 'ADD';
   addMoviesModal.classList.add('visible');
   toggleBackdrop();
 };
 //remove the add movies modal
 const backdropClickHandler = () => {
   closeMovieModal();
+  clearMovieInputs();
+  confirmAddMoviesBtn.innerText = 'Add';
 };
 //clear all input by a for loop
 const clearMovieInputs = () => {
@@ -128,7 +164,17 @@ const clearMovieInputs = () => {
 const cancelMovie = () => {
   closeMovieModal();
   clearMovieInputs();
+  confirmAddMoviesBtn.innerText = 'Add';
 };
+
+// const checkMovieModalHandler = (event) => {
+//   if(event == 'ADD'){
+//     addMovieHandler();
+//   }else if(event == 'UPDATE'){
+//     alert('update')
+//   }
+// };
+
 //add movies handler function
 const addMovieHandler = () => {
   const titleValue = userInputs[0].value;
@@ -141,6 +187,7 @@ const addMovieHandler = () => {
   const trailerValue = userInputs[7].value;
   const movieValue = userInputs[8].value;
   const imdbLinkValue = userInputs[9].value;
+
   //validate the user inputs
   if (titleValue.trim() === '') {
     alert('Title is required!');
@@ -208,6 +255,8 @@ const addMovieHandler = () => {
     newMovies.movieLink,
     newMovies.imdbLink
   );
+
+  confirmAddMoviesBtn.innerText = 'Add';
   updateUI(); //update the UI
 };
 //dummy values start
