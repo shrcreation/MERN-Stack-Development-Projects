@@ -21,7 +21,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0 2.5rem;
-  background: #00329e;
+  background: #15c55d;
 }
 
 header h1 {
@@ -171,11 +171,14 @@ input:focus {
 }
 
 .movie-element span a {
-  color: white;
+  color: black;
   display: inline;
-  background: #f67722;
+  background: #ffd100;
   padding: 0.25rem 1rem;
   border-radius: 5px;
+  font-style: normal;
+  font-size: 16px;
+  font-family: auto;
 }
 
 .movie-element h3 {
@@ -196,6 +199,7 @@ input:focus {
 }
 .movie-element a:hover {
   background-color: #d30808;
+  color: white;
 }
 .movie-element button {
   background: #ffbf00;

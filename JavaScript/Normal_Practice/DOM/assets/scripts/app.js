@@ -6,6 +6,7 @@ const cancelMovieModal = addMoviesModal.querySelector('.btn--passive');
 const confirmAddMoviesBtn = cancelMovieModal.nextElementSibling;
 const userInputs = addMoviesModal.querySelectorAll('input'); //store as an array[index based]
 const headerText = document.getElementById('entry-text');
+const deleteMovieModal = document.getElementById('delete-modal');
 const movies = [];
 
 //update the UI after add or delete movies
@@ -17,7 +18,7 @@ const updateUI = () => {
   }
 };
 //delete movies after find the index
-const deleteMovieHandler = (movieId) => {
+const deleteMovie = (movieId) => {
   let movieIndex = 0;
   for (const movie of movies) {
     if (movie.id === movieId) {
@@ -29,6 +30,17 @@ const deleteMovieHandler = (movieId) => {
   const listRoot = document.getElementById('movie-list');
   listRoot.children[movieIndex].remove(); //remove from list
   updateUI(); //update the ui
+  closeMovieModal();
+};
+
+const deleteMovieHandler = (movieId) => {
+  deleteMovieModal.classList.add('visible');
+  toggleBackdrop();
+  const cancelDeletionBtn = deleteMovieModal.querySelector('.btn--passive');
+  const confirmDeletionBtn = deleteMovieModal.querySelector('.btn--danger');
+
+  cancelDeletionBtn.addEventListener('click', closeMovieModal);
+  confirmDeletionBtn.addEventListener('click', deleteMovie.bind(null,movieId));
 };
 //set the movies data into the UI/list
 const renderNewMovieElements = (
@@ -68,7 +80,7 @@ const renderNewMovieElements = (
         <a href="${movieLink}" target="_blank">Watch Now</a>
         </br>
         </br>
-        <span><a href="${imdbLink}" target="_blank">${rating}/10 stars</a></span>
+        <span><a href="${imdbLink}" target="_blank">IMDB: ${rating}/10 ✰</a></span>
     </div>`;
   //delete movies by passing the id
   deleteMovieBtn.addEventListener('click', deleteMovieHandler.bind(null, id));
@@ -81,13 +93,23 @@ const toggleBackdrop = () => {
   backdrop.classList.toggle('visible');
 };
 //toggle(on/of switch) the add movies modal
-const toggleMovieModal = () => {
-  addMoviesModal.classList.toggle('visible');
+// const toggleMovieModal = () => {
+//   addMoviesModal.classList.toggle('visible');
+//   toggleBackdrop();
+// };
+const closeMovieModal = () => {
+  addMoviesModal.classList.remove('visible');
+  deleteMovieModal.classList.remove('visible');
+  toggleBackdrop();
+};
+
+const showMovieModal = () => {
+  addMoviesModal.classList.add('visible');
   toggleBackdrop();
 };
 //remove the add movies modal
 const backdropClickHandler = () => {
-  toggleMovieModal();
+  closeMovieModal();
 };
 //clear all input by a for loop
 const clearMovieInputs = () => {
@@ -98,7 +120,7 @@ const clearMovieInputs = () => {
 //cancel movie button and remove the add movies modal
 //call clear inputs
 const cancelMovie = () => {
-  toggleMovieModal();
+  closeMovieModal();
   clearMovieInputs();
 };
 //add movies handler function
@@ -164,7 +186,7 @@ const addMovieHandler = () => {
   };
   //push the values into the movies arrays
   movies.push(newMovies);
-  toggleMovieModal(); //remove add movies modal
+  closeMovieModal(); //remove add movies modal
   clearMovieInputs(); //clear all inputs
   //set the display items values
   renderNewMovieElements(
@@ -215,7 +237,7 @@ renderNewMovieElements(
 updateUI();
 //dummy values end
 
-startMoviesBtn.addEventListener('click', toggleMovieModal);
+startMoviesBtn.addEventListener('click', showMovieModal);
 backdrop.addEventListener('click', backdropClickHandler);
 cancelMovieModal.addEventListener('click', cancelMovie);
 confirmAddMoviesBtn.addEventListener('click', addMovieHandler);
