@@ -163,6 +163,13 @@ input:focus {
   margin-bottom: 1rem;
 }
 
+.movie-element p{
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: medium;
+  margin: 0;
+  text-align: justify;
+}
+
 .movie-element span a {
   color: white;
   display: inline;

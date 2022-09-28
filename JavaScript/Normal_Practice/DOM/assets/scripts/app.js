@@ -4,10 +4,11 @@ const startMoviesBtn = document.querySelector('header button');
 const backdrop = document.getElementById('backdrop');
 const cancelMovieModal = addMoviesModal.querySelector('.btn--passive');
 const confirmAddMoviesBtn = cancelMovieModal.nextElementSibling;
-const userInputs = addMoviesModal.querySelectorAll('input');
+const userInputs = addMoviesModal.querySelectorAll('input'); //store as an array[index based]
 const headerText = document.getElementById('entry-text');
 const movies = [];
 
+//update the UI after add or delete movies
 const updateUI = () => {
   if (movies.length === 0) {
     headerText.style.display = 'block';
@@ -15,7 +16,7 @@ const updateUI = () => {
     headerText.style.display = 'none';
   }
 };
-
+//delete movies after find the index
 const deleteMovieHandler = (movieId) => {
   let movieIndex = 0;
   for (const movie of movies) {
@@ -24,12 +25,12 @@ const deleteMovieHandler = (movieId) => {
     }
     movieIndex++;
   }
-  movies.splice(movieIndex, 1);
+  movies.splice(movieIndex, 1); //remove from arrays
   const listRoot = document.getElementById('movie-list');
-  listRoot.children[movieIndex].remove();
-  updateUI();
+  listRoot.children[movieIndex].remove(); //remove from list
+  updateUI(); //update the ui
 };
-
+//set the movies data into the UI/list
 const renderNewMovieElements = (
   id,
   title,
@@ -43,9 +44,11 @@ const renderNewMovieElements = (
   movieLink,
   imdbLink
 ) => {
+  //create UI elements
   const newMovieElement = document.createElement('li');
   const deleteMovieBtn = document.createElement('button');
   const editMovieBtn = document.createElement('button');
+  //set values
   deleteMovieBtn.innerText = 'Delete';
   editMovieBtn.innerText = 'Edit';
   newMovieElement.className = 'movie-element';
@@ -59,43 +62,46 @@ const renderNewMovieElements = (
         <h3>Year: ${year}</h3>
         <h3>Genres: ${genres}</h3>
         <h3>Duration: ${duration}</h3>
-        <a href="${trailer}">Trailer</a>
+        <a href="${trailer}" target="_blank">Trailer</a>
         </br>
         </br>
-        <a href="${movieLink}">Watch Now</a>
+        <a href="${movieLink}" target="_blank">Watch Now</a>
         </br>
         </br>
-        <span><a href="${imdbLink}">${rating}/10 stars</a></span>
+        <span><a href="${imdbLink}" target="_blank">${rating}/10 stars</a></span>
     </div>`;
+  //delete movies by passing the id
   deleteMovieBtn.addEventListener('click', deleteMovieHandler.bind(null, id));
   const listRoot = document.getElementById('movie-list');
-  listRoot.append(newMovieElement);
-  newMovieElement.append(deleteMovieBtn,editMovieBtn);
+  listRoot.append(newMovieElement); //append the li into the root (ul)
+  newMovieElement.append(deleteMovieBtn, editMovieBtn); //append the extra button into the li
 };
-
+//toggle(on/of switch) the overly background
 const toggleBackdrop = () => {
   backdrop.classList.toggle('visible');
 };
+//toggle(on/of switch) the add movies modal
 const toggleMovieModal = () => {
   addMoviesModal.classList.toggle('visible');
   toggleBackdrop();
 };
-
+//remove the add movies modal
 const backdropClickHandler = () => {
   toggleMovieModal();
 };
-
+//clear all input by a for loop
 const clearMovieInputs = () => {
   for (const userInput of userInputs) {
     userInput.value = '';
   }
 };
-
+//cancel movie button and remove the add movies modal
+//call clear inputs
 const cancelMovie = () => {
   toggleMovieModal();
   clearMovieInputs();
 };
-
+//add movies handler function
 const addMovieHandler = () => {
   const titleValue = userInputs[0].value;
   const descriptionValue = userInputs[1].value;
@@ -107,7 +113,7 @@ const addMovieHandler = () => {
   const trailerValue = userInputs[7].value;
   const movieValue = userInputs[8].value;
   const imdbLinkValue = userInputs[9].value;
-
+  //validate the user inputs
   if (titleValue.trim() === '') {
     alert('Title is required!');
     return;
@@ -142,7 +148,7 @@ const addMovieHandler = () => {
     alert('IMDB link is required!');
     return;
   }
-
+  //create a new movies obj and assign all input values
   const newMovies = {
     id: Math.random().toString(),
     title: titleValue,
@@ -156,10 +162,11 @@ const addMovieHandler = () => {
     movieLink: movieValue,
     imdbLink: imdbLinkValue,
   };
+  //push the values into the movies arrays
   movies.push(newMovies);
-  console.log(movies);
-  toggleMovieModal();
-  clearMovieInputs();
+  toggleMovieModal(); //remove add movies modal
+  clearMovieInputs(); //clear all inputs
+  //set the display items values
   renderNewMovieElements(
     newMovies.id,
     newMovies.title,
@@ -173,7 +180,7 @@ const addMovieHandler = () => {
     newMovies.movieLink,
     newMovies.imdbLink
   );
-  updateUI();
+  updateUI(); //update the UI
 };
 //dummy values start
 const dummyMovies = {
