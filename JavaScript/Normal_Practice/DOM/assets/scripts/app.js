@@ -9,6 +9,15 @@ const headerText = document.getElementById('entry-text');
 const deleteMovieModal = document.getElementById('delete-modal');
 const movies = [];
 
+//toggle(on/of switch) the overly background
+const toggleBackdrop = () => {
+  backdrop.classList.toggle('visible');
+};
+//toggle(on/of switch) the add movies modal
+// const toggleMovieModal = () => {
+//   addMoviesModal.classList.toggle('visible');
+//   toggleBackdrop();
+// };
 //update the UI after add or delete movies
 const updateUI = () => {
   if (movies.length === 0) {
@@ -16,6 +25,11 @@ const updateUI = () => {
   } else {
     headerText.style.display = 'none';
   }
+};
+const closeMovieModal = () => {
+  addMoviesModal.classList.remove('visible');
+  deleteMovieModal.classList.remove('visible');
+  toggleBackdrop();
 };
 //delete movies after find the index
 const deleteMovie = (movieId) => {
@@ -37,10 +51,16 @@ const deleteMovieHandler = (movieId) => {
   deleteMovieModal.classList.add('visible');
   toggleBackdrop();
   const cancelDeletionBtn = deleteMovieModal.querySelector('.btn--passive');
-  const confirmDeletionBtn = deleteMovieModal.querySelector('.btn--danger');
-
+  let confirmDeletionBtn = deleteMovieModal.querySelector('.btn--danger');
+  //recreate the (confirmDeletionBtn) button for get rid of old dom object.
+  //deep clone the button
+  //swaping the variable
+  confirmDeletionBtn.replaceWith(confirmDeletionBtn.cloneNode(true));
+  confirmDeletionBtn = deleteMovieModal.querySelector('.btn--danger');
+  //listner
+  cancelDeletionBtn.removeEventListener('click', closeMovieModal);
   cancelDeletionBtn.addEventListener('click', closeMovieModal);
-  confirmDeletionBtn.addEventListener('click', deleteMovie.bind(null,movieId));
+  confirmDeletionBtn.addEventListener('click', deleteMovie.bind(null, movieId));
 };
 //set the movies data into the UI/list
 const renderNewMovieElements = (
@@ -87,20 +107,6 @@ const renderNewMovieElements = (
   const listRoot = document.getElementById('movie-list');
   listRoot.append(newMovieElement); //append the li into the root (ul)
   newMovieElement.append(deleteMovieBtn, editMovieBtn); //append the extra button into the li
-};
-//toggle(on/of switch) the overly background
-const toggleBackdrop = () => {
-  backdrop.classList.toggle('visible');
-};
-//toggle(on/of switch) the add movies modal
-// const toggleMovieModal = () => {
-//   addMoviesModal.classList.toggle('visible');
-//   toggleBackdrop();
-// };
-const closeMovieModal = () => {
-  addMoviesModal.classList.remove('visible');
-  deleteMovieModal.classList.remove('visible');
-  toggleBackdrop();
 };
 
 const showMovieModal = () => {
@@ -207,17 +213,17 @@ const addMovieHandler = () => {
 //dummy values start
 const dummyMovies = {
   id: '01',
-  title: 'The Gray Man',
-  description: `When the CIA's top asset -- his identity known to no one -- uncovers agency secrets, he triggers a global hunt by assassins set loose by his ex-colleague.`,
-  year: '2022',
-  genres: 'Action, Drama, Thriller',
-  duration: '2h 2m',
+  title: 'Money Heist',
+  description: `A criminal mastermind who goes by "The Professor" has a plan to pull off the biggest heist in recorded history -- to print billions of euros in the Royal Mint of Spain. To help him carry out the ambitious plan, he recruits eight people with certain abilities and who have nothing to lose.`,
+  year: '2017',
+  genres: 'Action, Drama, Crime',
+  duration: '1h 10m',
   imageUrl:
-    'https://seuladogeek.com.br/wp-content/uploads/2022/05/The-Gray-Man-Movie.jpg',
-  rating: '6.5',
-  trailer: 'https://www.youtube.com/watch?v=BmllggGO4pM',
-  movieLink: 'https://roshiya.me/tag/index-of-the-gray-man-2022/',
-  imdbLink: 'https://www.imdb.com/title/tt1649418/',
+    'https://uhdmovies.app/wp-content/uploads/MoneyHeist-NetflixTVShowPosterFanArt_e91469e6-1d4b-4e79-82ce-7c3caa3072af.jpeg',
+  rating: '8.2',
+  trailer: 'https://www.youtube.com/watch?v=_InqQJRqGW4',
+  movieLink: 'https://www.netflix.com/title/80192098',
+  imdbLink: 'https://www.imdb.com/title/tt6468322/',
 };
 
 movies.push(dummyMovies);

@@ -8,6 +8,7 @@ html {
 
 body {
   margin: 0;
+  background-color: azure;
 }
 
 button:focus {
@@ -69,8 +70,8 @@ input:focus {
 .btn {
   font: inherit;
   padding: 0.5rem 1.5rem;
-  border: 1px solid #00329e;
-  background: #00329e;
+  border: 1px solid #15c55d;
+  background: #15c55d;
   color: white;
   border-radius: 6px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.26);
@@ -85,7 +86,7 @@ input:focus {
 }
 
 .btn--passive {
-  color: #00329e;
+  color: #15c55d;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -111,7 +112,7 @@ input:focus {
 .modal {
   position: absolute;
   z-index: 100;
-  background: white;
+  background: azure;
   border-radius: 10px;
   width: 80%;
   top: 30vh;
@@ -129,8 +130,8 @@ input:focus {
 .modal .modal__title {
   margin: 0;
   padding: 1rem;
-  border-bottom: 1px solid #00329e;
-  background: #00329e;
+  border-bottom: 1px solid #15c55d;
+  background: #15c55d;
   color: white;
   border-radius: 10px 10px 0 0;
 }
@@ -226,7 +227,7 @@ input:focus {
 .movie-element__image img {
   height: 100%;
   width: 100%;
-  object-fit: fill;
+  object-fit: cover;
 }
 
 .movie-element__info {
