@@ -175,3 +175,6 @@
 // const [firstName, lastName, ...otherInfo] = userData;
 
 // console.log(firstName,lastName,otherInfo);
+
+
+
