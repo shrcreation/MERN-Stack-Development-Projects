@@ -2,7 +2,7 @@ const addMoviesBtn = document.getElementById('add-movie-btn');
 const searchBtn = document.getElementById('search-btn');
 const movies = [];
 
-const renderMovies = () => {
+const renderMovies = (filter = '') => {
   const movieList = document.getElementById('movie-list');
   if (movies.length === 0) {
     movieList.classList.remove('visible');
@@ -12,12 +12,18 @@ const renderMovies = () => {
   }
   movieList.innerHTML = '';
 
-  movies.forEach((movie) => {
+  const filteredMovie = !filter
+    ? movies
+    : movies.filter((movie) => movie.info.titleValue.includes(filter));
+
+  filteredMovie.forEach((movie) => {
     const createMovieEl = document.createElement('li');
-    let text = movie.info.title + ' - ';
-    for (const key in movie.info) {
-      if (key !== 'title') {
-        text = text + `${key} : ${movie.info[key]}`;
+    const { info, ...otherProps } = movie; //objects destructuring
+    console.log(otherProps);
+    let text = info.titleValue + ' - ';
+    for (const key in info) {
+      if (key !== 'titleValue') {
+        text = text + `${key} : ${info[key]}`;
       }
     }
     createMovieEl.textContent = text;
@@ -26,14 +32,18 @@ const renderMovies = () => {
 };
 
 const addMovieHandler = () => {
-  const title = document.getElementById('title').value;
-  const extraName = document.getElementById('extra-name').value;
-  const extraValue = document.getElementById('extra-value').value;
+  const title = document.getElementById('title');
+  const extraName = document.getElementById('extra-name');
+  const extraValue = document.getElementById('extra-value');
+
+  const titleValue = title.value;
+  const extraNameValue = extraName.value;
+  const extraValueValue = extraValue.value;
 
   if (
-    title.trim() === '' ||
-    extraName.trim() === '' ||
-    extraValue.trim() === ''
+    titleValue.trim() === '' ||
+    extraNameValue.trim() === '' ||
+    extraValueValue.trim() === ''
   ) {
     return alert('Fields are required!!!');
   }
@@ -41,14 +51,30 @@ const addMovieHandler = () => {
   const newMovies = {
     id: Math.random(),
     info: {
-      title, //key name and value name are same so use 1
-      [extraName]: extraValue, //dynamic key name and dynamic value
+      titleValue, //key name and value name are same so use 1
+      [extraNameValue]: extraValueValue, //dynamic key name and dynamic value
+    },
+    descriptions: {
+      titleValue: 'this is a descriptions',
+      length: 23,
+    },
+    rating: [4.5, 5.6, 7.8],
+    cast: () => {
+      let name = 'SHR';
+      console.log(name);
     },
   };
-
   movies.push(newMovies);
   renderMovies();
-  console.log(movies);
+  title.value = '';
+  extraName.value = '';
+  extraValue.value = '';
 }; //ends addMovieHandler
 
+const searchMoviesHandler = () => {
+  const filterTerm = document.getElementById('filter-title').value;
+  renderMovies(filterTerm);
+};
+
 addMoviesBtn.addEventListener('click', addMovieHandler);
+searchBtn.addEventListener('click', searchMoviesHandler);
