@@ -8,8 +8,15 @@
   
   body {
     margin: 0;
-    background-color: #1e1e1e;
-    color: white;
+    background-color: #002842;
+    color: azure;
+  }
+
+  header{
+    color: azure;
+    text-align: center;
+    border-bottom: 1px solid grey;
+
   }
   
   label {
@@ -21,10 +28,11 @@
     font: inherit;
     border: none;
     border-bottom: 2px solid #ccc;
-    color: #494949;
+    color: white;
     width: 100%;
     display: block;
     margin: 1rem 0;
+    background-color: cadetblue;
   }
   
   input:focus {
