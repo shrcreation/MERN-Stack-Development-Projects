@@ -14,18 +14,24 @@ const renderMovies = () => {
 
   movies.forEach((movie) => {
     const createMovieEl = document.createElement('li');
-    createMovieEl.textContent = movie.info.movieTitle;
+    let text = movie.info.title + ' - ';
+    for (const key in movie.info) {
+      if (key !== 'title') {
+        text = text + `${key} : ${movie.info[key]}`;
+      }
+    }
+    createMovieEl.textContent = text;
     movieList.append(createMovieEl);
   });
 };
 
 const addMovieHandler = () => {
-  const movieTitle = document.getElementById('title').value;
+  const title = document.getElementById('title').value;
   const extraName = document.getElementById('extra-name').value;
   const extraValue = document.getElementById('extra-value').value;
 
   if (
-    movieTitle.trim() === '' ||
+    title.trim() === '' ||
     extraName.trim() === '' ||
     extraValue.trim() === ''
   ) {
@@ -35,7 +41,7 @@ const addMovieHandler = () => {
   const newMovies = {
     id: Math.random(),
     info: {
-      movieTitle, //key name and value name are same so use 1
+      title, //key name and value name are same so use 1
       [extraName]: extraValue, //dynamic key name and dynamic value
     },
   };
