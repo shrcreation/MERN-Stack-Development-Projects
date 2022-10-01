@@ -1,2 +1,1 @@
-# MERN-Stack-Development-Projects
-A Journey to MERN Stack Development. All Projects is here....
+# A Journey to MERN Stack Development
