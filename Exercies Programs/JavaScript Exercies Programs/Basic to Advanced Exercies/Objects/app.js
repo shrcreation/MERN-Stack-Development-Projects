@@ -14,15 +14,21 @@ const renderMovies = (filter = '') => {
 
   const filteredMovie = !filter
     ? movies
-    : movies.filter((movie) => movie.info.titleValue.includes(filter));
+    : movies.filter((movie) => movie.info.title.includes(filter));
 
   filteredMovie.forEach((movie) => {
     const createMovieEl = document.createElement('li');
+    // if('info' in movie){
+    //check the property exits in objects or not
+    // }
     const { info, ...otherProps } = movie; //objects destructuring
-    console.log(otherProps);
-    let text = info.titleValue + ' - ';
+    //let text = info.title + ' - ';
+    let { formattedTitle } = movie;
+    //formattedTitle = formattedTitle.bind(movie);
+    //let text = movie.formattedTitle() + ' - ';// also work
+    let text = formattedTitle.apply(movie) + ' - ';
     for (const key in info) {
-      if (key !== 'titleValue') {
+      if (key !== 'title') {
         text = text + `${key} : ${info[key]}`;
       }
     }
@@ -32,16 +38,15 @@ const renderMovies = (filter = '') => {
 };
 
 const addMovieHandler = () => {
-  const title = document.getElementById('title');
+  const movieTitle = document.getElementById('title');
   const extraName = document.getElementById('extra-name');
   const extraValue = document.getElementById('extra-value');
 
-  const titleValue = title.value;
+  const title = movieTitle.value;
   const extraNameValue = extraName.value;
   const extraValueValue = extraValue.value;
 
   if (
-    titleValue.trim() === '' ||
     extraNameValue.trim() === '' ||
     extraValueValue.trim() === ''
   ) {
@@ -51,28 +56,45 @@ const addMovieHandler = () => {
   const newMovies = {
     id: Math.random(),
     info: {
-      titleValue, //key name and value name are same so use 1
-      [extraNameValue]: extraValueValue, //dynamic key name and dynamic value
+      set title(val) {
+        if (val.trim() === '') {
+          this._title = 'DEFAULT';
+          return;
+        }
+        this._title = val;
+      },
+      get title() {
+        return this._title;
+      },
+      [extraNameValue]: extraValueValue,
     },
     descriptions: {
-      titleValue: 'this is a descriptions',
+      title: 'this is a descriptions',
       length: 23,
     },
     rating: [4.5, 5.6, 7.8],
-    cast: () => {
-      let name = 'SHR';
-      console.log(name);
+    formattedTitle() {
+      //never use arrow function
+      // let name = 'SHR';
+      // console.log(name);
+      return this.info.title.toUpperCase();
     },
   };
+
+  newMovies.info.title = title;
+  console.log(newMovies.info.title);
   movies.push(newMovies);
   renderMovies();
-  title.value = '';
+  movieTitle.value = '';
   extraName.value = '';
   extraValue.value = '';
 }; //ends addMovieHandler
 
 const searchMoviesHandler = () => {
   const filterTerm = document.getElementById('filter-title').value;
+  if (filterTerm.trim() === '') {
+    return alert(`Field can't be empty!!`);
+  }
   renderMovies(filterTerm);
 };
 
