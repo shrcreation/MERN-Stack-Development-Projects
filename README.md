@@ -1,2 +1,7 @@
 # A Journey to MERN Stack Development
-[i](start-date: 01-09-2022)
+> (start-date: 01-09-2022)
+
+..* List
+1. HTML
+2. CSS
+3. JavaScript
