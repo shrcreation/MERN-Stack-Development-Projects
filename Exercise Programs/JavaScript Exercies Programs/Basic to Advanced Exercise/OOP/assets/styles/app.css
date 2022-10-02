@@ -8,6 +8,8 @@ html {
 
 body {
   margin: 0;
+  background-color: #1e1e1e;
+  color: azure;
 }
 
 header {
@@ -20,17 +22,17 @@ header {
   justify-content: center;
   align-items: center;
   background: #540075;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 2px 6px rgba(238, 235, 235, 0.918);
 }
 
 header h1 {
-  color: white;
+  color: azure;
   font-size: 2rem;
 }
 
 button {
   background: #540075;
-  color: white;
+  color: azure;
   border: 1px solid #540075;
   border-radius: 5px;
   padding: 0.5rem 2rem;
@@ -71,15 +73,15 @@ button:active {
 
 .product-item {
   margin: 2rem auto;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  width: 50rem;
-  max-width: 90%;
+  box-shadow: 0 2px 8px rgb(250, 249, 249);
+  width: 20rem;
+  max-width: 80%;
 }
 
 .product-item img {
   width: 100%;
   height: 20rem;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .product-item__content {
