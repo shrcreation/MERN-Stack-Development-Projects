@@ -46,8 +46,8 @@ button:focus {
 
 button:hover,
 button:active {
-  background: #790fa3;
-  border-color: #790fa3;
+  background: #08632c;
+  border-color: #08632c;
 }
 
 .cart {
@@ -81,7 +81,7 @@ button:active {
 .product-item img {
   width: 100%;
   height: 20rem;
-  object-fit: fill;
+  object-fit: cover;
 }
 
 .product-item__content {

@@ -21,12 +21,54 @@ class Product {
 /**
  * this the single product item class
  * where we render the single product
- * it has a the product
- * it has a render method to return the single product
+ * it has the product params
+ * it has a render() method to return the single product
  */
+
+class ShoppingCart {
+  items = [];
+
+  set cartItems(value) {
+    this.items = value;
+    this.totalOutput.innerHTML = `<h2>Total: \$${this.totalAmount.toFixed(
+      2
+    )}</h2>`;
+  }
+
+  get totalAmount() {
+    const sum = this.items.reduce(
+      (preValue, currItem) => preValue + currItem.price,
+      0
+    );
+
+    return sum;
+  }
+
+  addProduct(product) {
+    const updateItems = [...this.items];
+    updateItems.push(product);
+    this.cartItems = updateItems;
+  }
+
+  render() {
+    const cartEl = document.createElement('section');
+    cartEl.innerHTML = `
+    <h2>Total: \$${0}</h2>
+    <button>Order Now!</button>
+    `;
+    cartEl.className = 'cart';
+    this.totalOutput = cartEl.querySelector('h2');
+    return cartEl;
+  }
+}
+
 class ProductItem {
   constructor(product) {
     this.product = product;
+  }
+
+  addToCart() {
+    App.addProductToCart(this.product);
   }
 
   //the method create the single product
@@ -43,14 +85,18 @@ class ProductItem {
               <button>Add to Cart</button>
           </div>
       </div>`;
-
+    const addCartBtn = prodEl.querySelector('button');
+    // addCartBtn.addEventListener('click', () => {
+    //   console.log('Order is processing...');
+    // });
+    addCartBtn.addEventListener('click', this.addToCart.bind(this));
     return prodEl; //return the value
   }
 }
 /**
  * this is the product list class
  * where we listed (set) and showed all products info
- * a renden method create all the elements
+ * a render() method create all the elements
  * and append all elements
  */
 class ProductList {
@@ -79,7 +125,6 @@ class ProductList {
   ];
 
   render() {
-    const renderHook = document.getElementById('app');
     const prodlist = document.createElement('ul');
     prodlist.className = 'product-list';
     for (const prod of this.products) {
@@ -87,11 +132,37 @@ class ProductList {
       const prodEl = productItem.render();
       prodlist.append(prodEl);
     }
-    renderHook.append(prodlist);
+    return prodlist;
   }
 
-  constructor() {}
+  constructor() {} //default constructor
 }
 
-const productList = new ProductList();
-productList.render();
+class Shop {
+  render() {
+    const renderHook = document.getElementById('app');
+    this.cart = new ShoppingCart();
+    const cartEl = this.cart.render();
+    const productList = new ProductList();
+    const prodListEl = productList.render();
+
+    renderHook.append(cartEl);
+    renderHook.append(prodListEl);
+  }
+}
+
+class App {
+  static cart;
+
+  static init() {
+    const shop = new Shop();
+    shop.render();
+    this.cart = shop.cart;
+  }
+
+  static addProductToCart(product) {
+    this.cart.addProduct(product);
+  }
+}
+
+App.init();
