@@ -33,9 +33,14 @@ class ElementAttribute {
 }
 
 class Component {
-  constructor(renderHookId) {
+  constructor(renderHookId, shouldRender = true) {
     this.hookId = renderHookId;
+    if (shouldRender) {
+      this.render();
+    }
   }
+
+  render() {}
 
   createRootElement(tag, cssClass, attributes) {
     const rootElement = document.createElement(tag);
@@ -97,8 +102,9 @@ class ShoppingCart extends Component {
 
 class ProductItem extends Component {
   constructor(product, renderHookId) {
-    super(renderHookId);
+    super(renderHookId, false);
     this.product = product;
+    this.render();
   }
 
   addToCart() {
@@ -133,52 +139,63 @@ class ProductItem extends Component {
  * and append all elements
  */
 class ProductList extends Component {
-  products = [
-    new Product(
-      'T-Shirt',
-      'https://cdn.shopify.com/s/files/1/0642/0427/5966/products/product-image-2002241604_800x.jpg',
-      'A brand new world cup t-shirt 2022',
-      21.99,
-      4.5
-    ),
-    new Product(
-      'Watch',
-      'https://cdn.shopify.com/s/files/1/0258/7862/6349/products/Z33Smartwatch_2_533x.jpg',
-      'A brand new smart watch 2022',
-      110.99,
-      4.7
-    ),
-    new Product(
-      'Mobile',
-      'https://imageio.forbes.com/specials-images/imageserve/6210dd57fca999e115f400e1/Apple--iPhone--new-iPhone--new-iPhone--iPhone-14--iPhone-14-Pro--iPhone-13--iPhone-13/960x0.jpg',
-      'A brand new Mobiles 2023',
-      49.99,
-      4.6
-    ),
-  ];
+  products = [];
+
+  constructor(renderHookId) {
+    super(renderHookId);
+    this.fetchProducts();
+  } //default constructor
+
+  fetchProducts() {
+    this.products = [
+      new Product(
+        'T-Shirt',
+        'https://cdn.shopify.com/s/files/1/0642/0427/5966/products/product-image-2002241604_800x.jpg',
+        'A brand new world cup t-shirt 2022',
+        21.99,
+        4.5
+      ),
+      new Product(
+        'Watch',
+        'https://cdn.shopify.com/s/files/1/0258/7862/6349/products/Z33Smartwatch_2_533x.jpg',
+        'A brand new smart watch 2022',
+        110.99,
+        4.7
+      ),
+      new Product(
+        'Mobile',
+        'https://imageio.forbes.com/specials-images/imageserve/6210dd57fca999e115f400e1/Apple--iPhone--new-iPhone--new-iPhone--iPhone-14--iPhone-14-Pro--iPhone-13--iPhone-13/960x0.jpg',
+        'A brand new Mobiles 2023',
+        49.99,
+        4.6
+      ),
+    ];
+    this.renderProducts();
+  }
+
+  renderProducts() {
+    for (const prod of this.products) {
+      new ProductItem(prod, 'prod-list');
+    }
+  }
 
   render() {
     this.createRootElement('ul', 'product-list', [
       new ElementAttribute('id', 'prod-list'),
     ]);
-    for (const prod of this.products) {
-      const productItem = new ProductItem(prod, 'prod-list');
-      productItem.render();
+    if (this.products && this.products.length > 0) {
+      this.renderProducts();
     }
   }
-
-  constructor(renderHookId) {
-    super(renderHookId);
-  } //default constructor
 }
 
 class Shop {
+  constructor() {
+    this.render();
+  }
   render() {
-    const renderHook = document.getElementById('app');
     this.cart = new ShoppingCart('app');
-    this.cart.render();
-    const productList = new ProductList('app');
-    productList.render();
+    new ProductList('app');
   }
 }
 
@@ -187,7 +204,6 @@ class App {
 
   static init() {
     const shop = new Shop();
-    shop.render();
     this.cart = shop.cart;
   }
 
