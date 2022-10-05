@@ -89,6 +89,11 @@ class ShoppingCart extends Component {
     this.cartItems = updateItems;
   }
 
+  orderProducts() {
+    console.log('Order is processing....');
+    console.log(this.items);
+  }
+
   render() {
     // const cartEl = document.createElement('section');
     const cartEl = this.createRootElement('section', 'cart');
@@ -96,6 +101,8 @@ class ShoppingCart extends Component {
     <h2>Total: \$${0}</h2>
     <button>Order Now!</button>
     `;
+    const orderBtn = cartEl.querySelector('button');
+    orderBtn.addEventListener('click', () => this.orderProducts());
     this.totalOutput = cartEl.querySelector('h2');
   }
 }
@@ -139,15 +146,16 @@ class ProductItem extends Component {
  * and append all elements
  */
 class ProductList extends Component {
-  products = [];
+  #products = [];//private property
 
   constructor(renderHookId) {
-    super(renderHookId);
-    this.fetchProducts();
+    super(renderHookId,false);
+    this.render();
+    this.#fetchProducts();
   } //default constructor
 
-  fetchProducts() {
-    this.products = [
+  #fetchProducts() {
+    this.#products = [
       new Product(
         'T-Shirt',
         'https://cdn.shopify.com/s/files/1/0642/0427/5966/products/product-image-2002241604_800x.jpg',
@@ -174,7 +182,7 @@ class ProductList extends Component {
   }
 
   renderProducts() {
-    for (const prod of this.products) {
+    for (const prod of this.#products) {
       new ProductItem(prod, 'prod-list');
     }
   }
@@ -183,7 +191,7 @@ class ProductList extends Component {
     this.createRootElement('ul', 'product-list', [
       new ElementAttribute('id', 'prod-list'),
     ]);
-    if (this.products && this.products.length > 0) {
+    if (this.#products && this.#products.length > 0) {
       this.renderProducts();
     }
   }
