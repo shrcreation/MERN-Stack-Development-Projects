@@ -9,3 +9,5 @@ class Person {
     console.log(`Hi, I am ${this.name} and my age is ${this.age}`);
   }
 }
+const person = new Person();
+person.greet();
